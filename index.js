@@ -1,3 +1,5 @@
+const startGameBtn = document.querySelector("#start-btn");
+startGameBtn.addEventListener("click", displayController);
 
 function gameBoard() {
     let size = 3;
@@ -39,6 +41,7 @@ function gameBoard() {
         }     
     }
     const getBoard = () => board;
+    const getBoardItems = (row,column) => board[row][column];
     const insertMarker = function(marker, row, column) {
         if(board[row][column] === " ") {
             board[row][column] = marker;
@@ -72,7 +75,7 @@ function gameBoard() {
         }
         return getWinner;
     }
-    return {createNewBoard, getBoard, insertMarker, checkWinner};
+    return {createNewBoard, getBoard, insertMarker, checkWinner, getBoardItems};
 }
 
 function createPlayer(name, marker) {
@@ -96,36 +99,72 @@ function switchActivePlayer() {
 function startGame() {
     const board = gameBoard();
     board.createNewBoard();
-    function playRound(row, column) {
+    let result = "";
+    function playRound(event) {
+        const target = event.target;
+        const row = +target.getAttribute('data-row');
+        const column = +target.getAttribute('data-column');
         console.log(`Current turn : Player: ${activePlayer.getName()}, Marker: ${activePlayer.getMarker()}`);
         board.insertMarker(activePlayer.getMarker(), row, column);
-        console.log(board.getBoard());
+        target.textContent = board.getBoardItems(row,column);
         if (board.checkWinner(activePlayer.getMarker()) === true) {
-            console.log(activePlayer.getName() + " wins!");
+            result = activePlayer.getName() + " wins!";
         }
         else if (board.checkWinner(activePlayer.getMarker()) === "Draw") {
-            console.log("It's a Draw!");
+            result = "It's a Draw!"
         }
         switchActivePlayer();
         console.log(`Next Turn : Player: ${activePlayer.getName()}, Marker: ${activePlayer.getMarker()}`);
         // console.log(board.getBoard());
     }
-    return {playRound, board};
+    return {playRound, board, result};
 }
 
-const Game1 = startGame();
-Game1.playRound(0,0);
-Game1.playRound(0,1);
-Game1.playRound(1,0);
-Game1.playRound(2,0);
-Game1.playRound(0,2);
-Game1.playRound(1,1);
-Game1.playRound(2,2);
-Game1.playRound(2,1);
+// const Game1 = startGame();
+// Game1.playRound(0,0);
+// Game1.playRound(0,1);
+// Game1.playRound(1,0);
+// Game1.playRound(2,0);
+// Game1.playRound(0,2);
+// Game1.playRound(1,1);
+// Game1.playRound(2,2);
+// Game1.playRound(2,1);
 
 function displayController() {
-    
+    const game = startGame();
+    const displayBody = document.querySelector("#game-display");
+    displayBody.removeChild(document.querySelector("#start-btn"));
+    const restartBtn = document.createElement("button");
+    restartBtn.textContent = "RESTART";
+    restartBtn.addEventListener("click", resetDisplay);
+    const displayBoard = document.createElement("div");
+    displayBoard.setAttribute("id","game-board");
+    function createDisplayBoard(){
+        const divs = [];
+        const buttons = [];
+        for(let i = 0; i < 3; i++) {
+            divs[i] = document.createElement("div");
+            for(let j = 0; j < 3; j++) {
+                buttons[j] = document.createElement("button");
+                buttons[j].setAttribute("data-row",`${[i]}`);
+                buttons[j].setAttribute("data-column",`${[j]}`);
+                buttons[j].textContent = game.board.getBoardItems([i],[j]);
+                buttons[j].addEventListener("click", game.playRound);
+                divs[i].appendChild(buttons[j]);
+            }
+            displayBoard.appendChild(divs[i]);
+        }
+        displayBody.appendChild(displayBoard);
+        displayBody.appendChild(restartBtn);
+    }
+    function resetDisplay() {
+        displayBoard.textContent = "";
+        game.board.createNewBoard();
+        createDisplayBoard();
+    }
+    return createDisplayBoard();
 }
+
 
 
 

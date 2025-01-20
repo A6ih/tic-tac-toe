@@ -14,23 +14,40 @@
     </header>
     <main>
         <div id="input-container">
-        <form action="">
-            <div id="player-one">
-                <span>
-                    <label for="player-one-input">Player Name: </label>
-                    <input type="text" name="player-one-name" id="player-one-input">
-                </span>
-            </div>
-            <div id="player-two">
-                <span>
-                    <label for="player-two-input">Player Name: </label>
-                    <input type="text" name="player-two-name" id="player-two-input">
-                </span>
-            </div>
-        </form>
+            <form action="">
+                <div id="player-one">
+                    <span class="input-span">
+                        <label for="player-one-input">Player One Name</label>
+                        <input type="text" name="player-one-name" id="player-one-input">
+                    </span>
+                </div>
+                <div id="player-two">
+                    <span class="input-span">
+                        <label for="player-two-input">Player Two Name</label>
+                        <input type="text" name="player-two-name" id="player-two-input">
+                    </span>
+                </div>
+            </form>
         </div>
         <div id="game-display">
-            <button>START</button>
+            <!-- <div id="game-board">
+                <div>
+                    <button class="board-btn" data-row="0" data-column="0"></button>
+                    <button class="board-btn" data-row="0" data-column="1"></button>
+                    <button class="board-btn" data-row="0" data-column="2"></button>
+                </div>
+                <div>
+                    <button class="board-btn" data-row="1" data-column="0"></button>
+                    <button class="board-btn" data-row="1" data-column="1"></button>
+                    <button class="board-btn" data-row="1" data-column="2"></button>
+                </div>
+                <div>
+                    <button class="board-btn" data-row="2" data-column="0"></button>
+                    <button class="board-btn" data-row="2" data-column="1"></button>
+                    <button class="board-btn" data-row="2" data-column="2"></button>
+                </div>
+            </div> -->
+            <button id="start-btn">START</button>
         </div>
     </main>
     <script src="./index.js"></script>
